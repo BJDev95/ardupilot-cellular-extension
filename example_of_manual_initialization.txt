@@ -1,0 +1,20 @@
+# Lines with # are comments. Other lines are commands to send to the DroneCell.
+# I have changed the E0 that the cellular extension needs to E1 in this manual test. 
+# This enables us to see what we type in the terminal (echo).
+# In the commands, change configuration to what suits your needs (my Access Point Name
+# is "internet", yours may differ), remote host name or IP, UPS port etc.
+
+ATV1 E1 X1 S0=0 +CMEE=0
+
+# Now wait for an +CGREG:1 URC, telling us that DroneCell is attached to data network.
+
+AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,"internet"
+AT+CSTT
+AT+CIICR
+AT+CIFSR
+AT+CIPSTART="udp","my.host.name","10001"
+AT+CIPSEND=12
+datablahblah
+
+# You should now get a SEND OK response, and see the data arriving per UDP at the host 
+# at my.host.name on port 10001 or whatever you changed it to.

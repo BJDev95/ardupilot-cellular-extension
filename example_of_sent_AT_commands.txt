@@ -1,0 +1,75 @@
+# Lines with # are comments. Other lines are commands to send to the DroneCell.
+# This is a sample of what APM sends to DroneCell when I init my system.
+
+ATV1 E0 X1 S0=0 +CMEE=0
+AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,"internet"
+AT+CSTT
+AT+CIPSHUT
+AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,"internet"
+AT+CSTT
+AT+CIPSHUT
+AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,"internet"
+AT+CSTT
+AT+CIPSHUT
+AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,"internet"
+AT+CSTT
+AT+CIPSHUT
+AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,"internet"
+
+# ...more of the same kind for 20-30 seconds until DroneCell is properly attached to data network...
+
+AT+CIPSHUT
+AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,"internet"
+AT+CSTT
+AT+CIPSHUT
+AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,"internet"
+AT+CSTT
+AT+CIICR
+AT+CIFSR
+AT+CIPSTART="udp","www.sky-cam.dk","10001"
+AT+CIPSEND=255
+þ3ýWarming up ADC...Demo Servos!
+                                Move RC toggle swiÚöþ   w~þüÿÿüÿÿ`'ÿÿÿY?þ       £þüÿÿüÿÿ`'ÿÿÿÈÎþ3ýDemo Servos!>þ        ðþ3ýBAT+CIPSEND=240
+üÿÿüÿÿê >ïjyþ3  ý
+
+                  Ready to FLY.dNþ
+                                        Áx-þ
+                                            ÷õçIþ
+('ÿÿbþ!v±ÿÿÿ$w                                   *@þ
+              Rþ$<µ°°°°Ò        îKèAT+CIPSEND=229
+þ#      ²°°°°°°°°6}þ
+                    ²U0¾(³=?u¿Âø9?Ü¹ØiþJè,ìQ¸½ïu¥=1ø þüÿÿüÿÿÒ   2ïj§&þ÷õ[ þ*ö´þ('ÿÿ
+²(¦ÿÿÿ%w}ÓAT+CIPSEND=59                                                            Ïþ!
+þ$üº°°°°Ò       îKþ#´²°°°°°°°°@ÁAT+CIPSEND=17
+þ       Á¯ûAT+CIPSEND=199
+þüÿÿüÿÿÒÊ       'ïjIÕþ÷õ_þ*jþ('ÿÿæþ!þ³(~ÿÿÿ%wð;þ ´M%0¾~-³=·¼u¿p¡©:¢hQº ¸miþ!JZ=¸¾Ý¥¾1wAT+CIPSEND=230
+þ"üÿÿüÿÿÉ       *ïjéoþ#÷õÁþ$*iýþ%('ÿÿá¤þ&!
+                                          ¶(jÿÿÿ$wâþ'$Ç°°°°Ò    îK{þ(#
+                                                                      ¶°°°°°°°°þDþ)
+                                                                                   ¶¾W|³=CÀu¿ò·µ:<;ºòåAT+CIPSEND=28
+þ*J?)\¾ 69¾1«tAT+CIPSEND=17
+þ       +Á-öAT+CIPSEND=199
+þ,üÿÿüÿÿ>å      Aïj
+                   þ-÷õÁþ.*>þ/('ÿÿ[×þ0!¸ÿÿÿ wjØþ1¸N0¾$U³=öu¿j9`'É8#?frþ2Jã%Âõ½8>0'AT+CIPSEND=59
+Ö°°°°Ò  îKì=þ4#þ¹°°°°°°°°fÅAT+CIPSEND=199
+þ5üÿÿüÿÿ
+        XïjPþ6÷ñù/þ7*Îàþ8('ÿÿd'þ9!º(ÿÿÿw?Hþ:ºdU0¾cD³="v¿.'/:    8pñ´9wÆþ;Ju®Gá½Ý¿=0?AT+CIPSEND=17
+þ       <Á}PAT+CIPSEND=199
+þ=üÿÿüÿÿ^
+         ZïjYþ>÷ñ3Pþ?*">þ@('ÿÿ~dþA!!¼(ÿÿÿwyþB"¼( 0¾d³=v¿À§9Ps8M&;ãþCJÀ®G?Ù¾0ÝFAT+CIPSEND=59
+þD$`"æ°°°°Ò     îKtBþE#ü½°°°°°°°°ÐAT+CIPSEND=199
+þFüÿÿüÿÿÒÙ      ;ïj¼iþG÷ñ?þH*vèþI('ÿÿþJ!+¾(ÿÿÿ!w¨%þK,¾¤%0¾³=,âu¿AK9À'V·|?ÝÚþLJÍÌ?Rµ-¾0ªªAT+CIPSEND=17
+þ       MÁAT+CIPSEND=199
+þNüÿÿüÿÿúò      Bïj
+                   cþO÷ñóþP*SþQ('ÿÿ?þR!4À(~ÿÿÿ wßþS5Àã-0¾Y³=ñïu¿´Üx96*ºPK
+                                                                         ¹KôþTJ¸¾òþµ½0ZAT+CIPSEND=59
+þU$8¸õ°°°°Ò     îKS¸þV#ùÁ°°°°°°°°½ÆAT+CIPSEND=199
+þWüÿÿüÿÿ,
+         MïkíòþX÷ñvåþY*jÂþZ('ÿÿTÄþ[!;Â(~ÿÿÿ w¯þ\<Â00¾×z³=õu¿ØE9LM¹Ò¨:Ñîþ]JÂõ½û¾0AT+CIPSEND=17
+þ       ^ÁyKAT+CIPSEND=199
+þ_üÿÿüÿÿî
+         Lïk»þ`÷ñþa*ÌÊþb('ÿÿ=Ñþc!DÄ(ÿÿÿ"w½ÈþdEÄ0¾-¥³=;×u¿$·19eÊ8Xÿ(;ÏþeJ®Gá½_@¼0¼RAT+CIPSEND=59
+þf$¼M°°°°Ò      îKM
+                   þg#÷Å°°°°°°°°Uv
+				   
+# etc. etc. AT+CIPSEND commands, followed by their binary MAVLink payload
