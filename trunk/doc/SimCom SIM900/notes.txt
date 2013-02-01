@@ -1,0 +1,149 @@
+AT+CIPMUX=<n>	n in {0,1}		Set multiplexer on(1)/off
+AT+CIPMODE=<n>	n in {0,1}		Set transparent mode on(1)/off
+
+AT+CGREG					Register to data network
+AT_CGATT					Attach to data network
+
+AT+CSTT					Set APN name
+AT+CIICR					"Bring up wireless connection"
+AT+CTFSR					Get IP address assigned
+
+AT+CIPSTART=<proto>,<ipaddress>,<port>
+						Establish connection
+AT+CIPSEND					send datda to connection 							(after receiving ">" and 	AT+						terminating with CTRL-Z)
+AT+CIPCLOSE				Close connection
+
+
+AT+CLPORT="UDP",<port>		Bind source port
+
+
+AT+IFC=<x,y>				Set hardware flow control
+
+AT+CIPCCFG					Set/enable escape sequence
+
+
+AT+CSQ					Signal quality
+
+AT+CIPSRIP=<0,1>				Sender IP info (RECV FROM)
+AT+CIPHEAD=<0,1>				Sender IP info (IPD,n:)
+AT+CIPUDPMODE=<0,1>			Set extended UDP mode (only 						while not connected)
+AT+CIPUDPMODE?				Remote IP and UDP port
+						(what we connected to!)
+
+
+
+Data chunking at send:
+AT+CIPSEND=10				length of 10
+AT+CIPATS=<mode>,<time> then AT+SIPSEND Timeout (what is mode?)
+AT+CIPSEND?				Query max. length
+
+
+
+
+State machine proposal!
+
+1 AT+CPIN?  --> no good, send PIN code.
+2 AT+CSQ?   --> too bad, complain
+3 AT+CREG?  --> if 0, ?
+4 AT+CGATT? --> if 0, do..? Reset AT+CFUN=1,1 seemed to help.
+5 AT+CSTT="internet"   (at&w does not store this)
+6 AT+CIICR
+7 AT+CIFSR (maybe not necesary, just query IP address?)
+
+10 AT+CIPSTART=....
+wait for CONNECT OK
+11 AT+CIPSEND wait for >
+12 send, CTRL-Z
+<data in other direction just arrives...>
+
+
+
+From the forum mail:
+AT+IPR=57600				Set baud rate
++++ATH0                		Hang up
+AT+CFUN=1,1                     Some power mgmt
+AT V1 E1 X1 S0=0                V1=use text response format 
+						("CONNECT" instead of "1" etc)
+						X1=Do not tell about busy 							signals and dialtones in 							responses.
+						S0=do not answer calls.
+						E1=Enable echo
+AT+CREG=2                       Registration Enable URCs with 						stat and location and cell ID
+AT+CMEE=2                       Enable verbose error return 						codes
+AT+CR=1                         Enable reporting of type of 						service at call setup
+AT+CRC=1                        Enable reporting of typt of 						service at ring
+AT+CSNS=4                       Single numbering scheme=data     
+AT+CSMINS=1                     Enable URC at SIM insertion/
+						removal     
+AT+CSCLK=0                      Disable slow clock (sleep 							mode)
+AT+CIURC=1                      Enable "Call Ready" URC at 							startup  
+AT+CGEREP=2                     Buffer URCs in TE until TE 							link becomes available        
+AT+CIPMUX=0                     No multiplexer   
+AT+CIPMODE=1                    Transparent mode on
+AT+CIPCCFG=8,10,10,0            Transparent IP: 8 retries, 10						*200ms wait, 10 send size
+						(waaaay too little!), escape 						sequence is off
+AT+CMUX=0,0,1,127,10,3,30,10,2  Multiplexer setup (but 							multiplexer is disabled)
+AT+CSTT="opengate"               
+AT+CIICR                        Bring up wireless connection 						with GPRS or CSD
+AT+CIFSR                    	Get local IP address
+AT+CIPSTART="udp","###.###.###.###","14550"
+
+
+
+
+Own suggestion:
+
+AT V1 E1 X1 S0=0
+
+AT+CPIN
+If not READY, either set pin or give up.
+
+AT+IURC=0
+AT+CMEE=0
+
+AT+CREG?
+if not 1, try set to 1
+
+AT+CGATT?
+if not 1, try set to 1
+
+AT+CDNSCFG?
+
+
+
+
+
+Senddata example with > enabled:
+at+cipsend=5
+> asdfg
+SEND OK
+
+
+Senddata example with > disabled:
+
+
+
+
+The one with enabling URCs
+AT+CSCS
+
+AT+CGACT
+AT+CGCLASS?
+AT+CGDCONT
+AT+CGEREP=2
+AT+IFC=0,0 (none) or AT+IFC=2,2(hardware)
+
+We maintain a state of the condition of the connection:
+Not call-ready (is PIN unlocked?)
+Not attached
+Attached but not connected AT+CGATT
+Connected with .../... bps
+etc..
+We query the state(s) regularaly.
+We send Mavlink text messages to the other interface regularly.
+Can also send operator+ AT+COPS
+
+One idea: Leave the configuration in the SIM card phonebook or in a SIM card SMS.
+Other idea: Leave a phone number of an emergency number to send SMSes to, in case the connection fails.
+(AT commands guide, page 230)
+
+Flow control: Software is not possible!

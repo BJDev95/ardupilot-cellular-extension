@@ -1,0 +1,11 @@
+A wants to send from A:r to B:p
+B wants to send from B:s to A:q (p and q are probably really the same...)
+
+Problem: NAT N_a translates r to some unknown t (and keeps a mapping t->A:r). 
+And NAT N_b drops the datagram (because it has no mapping u->B:p)
+
+Solution:
+A sends from A:r to S. N_a translates r to some v.
+B sends from B:s to S. N_b translates s to some w.
+
+S tells A to send directly to B:w. S tells B to send directly to A:v
