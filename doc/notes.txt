@@ -1,0 +1,115 @@
+URCs
+About URC collision avoidance:
+If an AT command is finished (with "OK" or "ERROR") the TE shall always wait at least 100 milliseconds
+before sending the next one. This gives MC45 / MC46 the opportunity to transmit pending
+URCs and get necessary service.
+Some AT commands may require more delay after an "OK" or "ERROR" response, refer to the following
+command specifications for details.
+The TE shall communicate with MC45 / MC46 using activated echo (ATE1), i.e. MC45 / MC46
+echoes characters received from the TE.
+Hence, when the TE receives the echo of the first character "A" of the AT command just sent by itself
+it has control both over the receive and the transmit paths. This way, no URC can be issued by
+MC45 / MC46 in between.
+
+To announce a pending URC transmission the ME will do the following:
+The ME activates its Ring line (logic "1") for one second, i.e. the line changes to physical "Low"
+level. This allows the TE to enter power saving mode until ME related events request service.
+If the AT command interface is busy a "BREAK" will be sent immediately but the URC will not be
+issued until the line is free. This may happen if the URC is pending
+- while an AT command is being processed, i.e. during the time from sending the first character
+"A" of an AT command by the TE until the ME has responded with "OK" or "ERROR", or
+- during a data call.
+Please note that AT command settings may be necessary to enable in-band signaling. For example,
+refer to AT+CMER or AT+CNMI.
+
+
+Character sets:
+The ME supports two character sets: GSM 03.38 (7 bit, also referred to as SMS alphabet) and UCS2
+(16 bit, refer to ISO/IEC 10646 (aka Unicode)). See Chapter 4.44 for information about selecting the character set.
+Character tables are provided in Chapter 9.5.
+
+DCS, Data Coding Scheme: SMS-on-SIM coding scheme
+IRA: translating a byte to 2 ASCII characters representing the hex value of the byte
+
+Character set commands: AT+CSCS
+
+
+
+Common commands:
+ATA answer incoming call
+ATH hangup
+ATX Tone detection when calling...
+
+AT&W Write user profile
+
+AT&C Set carrier detect mode (0=always on, 1=when data carrier present. Default is 1)
+AT&D Set DTR mode (allows dropping a data call when DTR goes offline)
+AT&S Set DSR mode (0=always on, default. 1=on in data mode)
+
+ATZ  set parameters from user profile
+AT&F set parameters to factory defaults
+
+
+AT\Qn set flow control (3=hardware)
+
+AT+GCAP Capabilities list
+AT+GSN  EMEI
+AT+ILRR Local data ("baud") rate reporting
+AT+IPR  set local data rate
+
+Error reports:
+ATV: Set result code format ("OK" or "0" etc)
+AT+CEER (extended error report for voice)
+AT+CMEE set mobile equipment error reporting (more that just "ERROR")
+
+Power and Alarm:
+AT+CALA set alarm
+AT+CCLK set clock
+AT^SBC  current consumption
+AT^SCTM temperature
+AT^SMSO shutdown
+AT+CFUN set phone functionality (use 7 (2 seconds) or 8 (10 minutes) and use hardware flow control). However If the ME is in Multiplexer mode, it is not recommended to activate SLEEP mode with AT+CFUN=<n>. The best approach to properly control SLEEP mode in this case is to issue the PSC messages described in [5], Chapter Power saving control (PSC).
+SYNC LED will stop flashing in power save mode.
+
+General mobile stuff reporting:
+AT+CIND
+AT+CIND=?
++CIND: ((battchg,(0-5)),(signal,(0-7,99)),(service,(0-1)),(sounder,(0-1)),(message,(0-1)),(call,(0-1)),(roam,(0-1)),(smsfull,(0-1))
+AT+CIND?
++CIND: 5,99,1,0,0,0,0,0
+AT+CLCC list current calls
+AT+CRC  set extended cellular result codes for incoming call indication
+at+csq  RSSI and error rate +CSQ: 26,99
+
+
+Multiplexer:
+AT+CMUX
+
+Network:
+AT+COPN Show operator names
+AT+COPS operator selection
+at+cops?
++COPS: 0,0,"sunrise"
+at+cops=?
++COPS: (2,"sunrise",,"22802"),(1,"SWISS GSM",,"22801"),(1,"Orange CH",,"22803"),,(0-4),(0,2)
+
+
+SMS:
+From AT&V, display current configuration:
+The parameters of AT^SMGO can only be displayed after the SMS data from
+the SIM have been read successfully for the first time. Reading starts after
+successful SIM authentication has been performed, and may take up to 30
+seconds depending on the SIM used. While the read process is in progress,
+an attempt to read the parameter will result in empty values.
+The parameter of AT+CSDH will only be displayed in SMS text mode, i.e. if
+AT+CMGF=1.
+
+AT+CMGF Set SMS message format (0=PDU, 1=text)
+AT+CMGL List SMS messages from preferred store
+AT+CMGS Send SMS message
+AT+CMGC Send an SMS command
+
+
+
+Data:
+AT+CRLP Select radio link protocol param. for orig. non-transparent data call
