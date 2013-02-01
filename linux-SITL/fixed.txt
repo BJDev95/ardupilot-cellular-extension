@@ -1,0 +1,11 @@
+Buffer::bytes initialized to NULL
+BufferedStream::_open initialized to false
+Is there a blocking write in BufferedStream?
+int BufferedStream::read(void) {
+	if (_rxBuffer->_head == _rxBuffer->_tail) return -1;
+	return _rxBuffer->read();
+}
+int BufferedStream::peek(void) {
+	if (_rxBuffer->_head == _rxBuffer->_tail) return -1;
+	return _rxBuffer->peek();
+}
