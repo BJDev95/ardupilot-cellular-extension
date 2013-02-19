@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="java-server" default="all" basedir=".">
+	<property name="optimize" value="on"/>
+	<property name="debug" value="on"/>
+
+	<path id="classpath">
+		<fileset dir="." includes="lib/**/*.jar"/>
+	</path>
+
+	<target name="all" depends="jar"/>
+
+	<target name="compile">
+		<mkdir dir="build"/>
+		<javac srcdir="." destdir="build" source="1.5" optimize="${optimize}" debug="${debug}">
+			<classpath refid="classpath"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="dist"/>
+		<jar jarfile="dist/java-server.jar" manifest="manifest.txt" basedir="build"/>
+	</target>
+</project>
