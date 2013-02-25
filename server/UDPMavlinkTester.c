@@ -1,6 +1,6 @@
-/* mavlnkUDP.c:
- * Mavlink serial to UDP relay for use onboard airplane.
- * Will communicate with simpeUDPRelay.
+/**
+ * UDPMavlinkTester:
+ * Listens to UDP traffic and parses incoming data as MAVLink. Prints the IDs of any succssfully received messages.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,22 +42,7 @@ int serialOutputFD = 1; // just use stdout as default
 
 #define MAX_MESSAGE_LENGTH 10
 
-/*
-#define MESSAGE_BUFFER_SIZE 2
-
-volatile uint8_t serialToUDPBuffer[MESSAGE_BUFFER_SIZE][MAX_MESSAGE_LENGTH];
-volatile size_t serialToUDPBufferLengths[MESSAGE_BUFFER_SIZE];
-volatile int serialToUDPIn = 0;
-volatile int serialToUDPOut = 0;
-
-volatile uint8_t UDPToSerialBuffer[MESSAGE_BUFFER_SIZE][MAX_MESSAGE_LENGTH];
-volatile size_t UDPToSerialBufferLengths[MESSAGE_BUFFER_SIZE];
-volatile int UDPToSerialIn = 0;
-volatile int UDPToSerialOut = 0;
-*/
-
-uint8_t serialToUDP = 1;
-uint8_t UDPToSerial = 1;
+uint8_t run = 1;
 
 #define BUFFER_LENGTH (MAX_MESSAGE_LENGTH * 1)
 uint8_t serialReadBuffer[BUFFER_LENGTH];
@@ -72,31 +57,6 @@ pid_t serialReceiverThreadPID;
 
 mavlink_message_t mavlinkMsg;
 mavlink_status_t mavlinkStatus;
-
-/*
-static struct sgttyb savemodes;
-static int havemodes = 0;
-
-int tty_break() {
-  struct sgttyb modmodes;
-  if(ioctl(fileno(stdin), TIOCGETP, &savemodes) < 0)
-    return -1;
-  havemodes = 1;
-  modmodes = savemodes;
-  modmodes.sg_flags |= CBREAK;
-  return ioctl(fileno(stdin), TIOCSETN, &modmodes);
-}
-
-int tty_getchar() {
-  return getchar();
-}
-
-int tty_fix() {
-  if(!havemodes)
-    return 0;
-  return ioctl(fileno(stdin), TIOCSETN, &savemodes);
-}
-*/
 
 int mavlink_parse(uint8_t c) {
   static int totalBytesParsed = 0;
@@ -140,7 +100,7 @@ int receiveUDP(void) {
 
 void sniffUDPPackets(void) {
   int i;
-  while(UDPToSerial) {
+  while(run) {
     int UDPReceivedBufferLength;
     if ((UDPReceivedBufferLength = receiveUDP())) {
       for (i=0; i<UDPReceivedBufferLength; i++) {
@@ -154,7 +114,7 @@ int main(int argc,char **argv) {
   char* serverIPAddress;
   int serverPort;
   int myPort;
-  //  char myName[8];
+
   struct sockaddr_in myAddr;
   int addr_size = sizeof serverAddr;
 
@@ -202,5 +162,6 @@ do it though, so we can make new "connections" just the see if the server gets t
   }
   
   sniffUDPPackets();
+
   return 0;
 }

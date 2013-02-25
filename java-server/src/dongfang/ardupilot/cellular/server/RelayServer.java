@@ -112,6 +112,7 @@ public class RelayServer {
 	boolean crash = false;
 	List<Connection> connections = new LinkedList<Connection>();
 	MAVLinkInterpreter mavlink = new MAVLinkInterpreter();
+	FileLogger logger = new FileLogger();
 
 	class Message {
 		Connection receivedConnection;
@@ -436,7 +437,7 @@ public class RelayServer {
 		}
 	}
 
-	void start(int TCPPort, int UDPPort) {
+	void start(int TCPPort, int UDPPort, String logFileName) {
 		try {
 			new UDPConnectionAcceptor(UDPPort).start();
 		} catch (SocketException ex) {
@@ -460,12 +461,59 @@ public class RelayServer {
 				System.err.println("There was some prob starting MAVLink interpreter.");
 			}
 		}
+		if (!crash) {
+			try {
+				fileLogger.init(logFileName);
+				fileLogger.start();
+			} catch (IOException ex) {
+				System.err.println("There was some prob with the file logger.");
+			}
+		}
 	}
 
+	class FileLogger extends Thread {
+		PipedOutputStream sink;
+		PipedInputStream source;
+		FileOutputStream dumpFile;
+
+		void init(String fileName) throws IOException {
+			sink = new PipedOutputStream();
+			source = new PipedInputStream(sink);
+			dumpFile = new FileOutputStream(fileName);
+		}
+		
+		void deliver(byte[] data, int offset, int length) {
+			try {
+				sink.write(data, offset, length);
+			} catch(IOException ex) {
+				System.err.println(ex);
+			}
+		}
+
+		public void run() {
+			int length;
+			byte[] buffer = new byte[512];
+			while (true) {
+				try {
+					if ((length = source.read(buffer)) > 0) {
+						dumpFile.write(buffer, 0, length);
+					}
+				} catch(IOException ex) {
+					System.err.println(ex);
+				}
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
+		if (args.length != 3) {
+			System.err.println("Usage: RelayServer <TCP port number> <UDP port number> <log file name>");
+			System.exit(1);
+		}
 		int TCPPort = Integer.parseInt(args[0]);
 		int UDPPort = Integer.parseInt(args[1]);
+		String logFileName = args[2];
 
-		new RelayServer().start(TCPPort, UDPPort);
+		new RelayServer().start(TCPPort, UDPPort, logFileName);
 	}
 }
