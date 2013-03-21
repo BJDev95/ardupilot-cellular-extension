@@ -6,14 +6,10 @@
 // your option) any later version.
 //
 
-#include <cstdlib>
-
 #ifndef __BUFFEREDSTREAM_H
 #define __BUFFEREDSTREAM_H
-
-#define min(a,b) ((a)<(b) ? (a) : (b))
-
 #include "BetterStream.h"
+#include <AP_Math.h>
 
 class BufferedStream: public BetterStream {
 public:
@@ -116,7 +112,6 @@ public:
 	virtual int read(void);
 	// This does not check that data is actually available!
 	virtual int peek(void);
-#define ARDUINO 100
 #if defined(ARDUINO) && ARDUINO >= 100
 	virtual size_t write(uint8_t c);
 #else

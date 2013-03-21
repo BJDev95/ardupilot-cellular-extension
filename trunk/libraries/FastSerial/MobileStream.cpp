@@ -12,13 +12,14 @@ BufferedStream::Buffer __MobileStream__txBuffer;
 MobileStream::ParseState parseState;
 
 const prog_char C_INIT0[] PROGMEM = "\r\nATV1 E0 X1 S0=0 +CMEE=0";
+
 // CONFIGURATION TO DO
-const prog_char C_CONFIGURATION1[] PROGMEM = "AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,\"internet\"";
+const prog_char C_CONFIGURATION1[] PROGMEM = "AT+CGEREP=2,0;+CIURC=0;+CFGRI=1;+CIPHEAD=1;+CIPSPRT=1;+CIPCSGP=1,\"m2m.t-mobile.com\"";
 const prog_char C_START1[] PROGMEM = "AT+CSTT";
 const prog_char C_START2[] PROGMEM = "AT+CIICR";
 const prog_char C_START3[] PROGMEM = "AT+CIFSR";
 // CONFIGURATION TO DO
-const prog_char C_DATA_CONNECTION[] PROGMEM = "AT+CIPSTART=\"udp\",\"www.sky-cam.dk\",\"10001\"";
+const prog_char C_DATA_CONNECTION[] PROGMEM = "AT+CIPSTART=\"udp\",\"174.109.85.205\",\"14550\"";
 const prog_char C_RESET[] PROGMEM = "AT+CFUN=1,1";
 const prog_char C_RESET_IP[] PROGMEM = "AT+CIPSHUT";
 
