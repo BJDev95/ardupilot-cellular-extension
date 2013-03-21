@@ -57,7 +57,6 @@ int BufferedStream::peek(void) {
 	return _rxBuffer->peek();
 }
 
-#define ARDUINO 100
 #if defined(ARDUINO) && ARDUINO >= 100
 size_t BufferedStream::write(uint8_t c) {
 	if (!_open) // drop bytes if not open
