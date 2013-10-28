@@ -132,14 +132,14 @@ public:
 
 	class DecisionState: public State {
 	private:
-		size_t numTransitions;
+		uint8_t numTransitions;
 		Transition const * transitions;
 	protected:
 		void receiveResponseLine(MobileStream* const outer, ParseState& parseState) const;
 		const State* match(const ParseState& parseState) const;
 	public:
 		DecisionState();
-		DecisionState(size_t numTransitions, Transition const * transitions);
+		DecisionState(uint8_t numTransitions, Transition const * transitions);
 		virtual void task(MobileStream* const outer, ParseState& parseState) const;
 		const State* findSuccessor(MobileStream* const outer, ParseState& parseState) const;
 	};
@@ -167,8 +167,7 @@ public:
 
 	class CommandState: public DecisionState {
 	public:
-//		CommandState(const char* command /*, int numTransitions, Transition const * transitions */);
-		CommandState(const char* command,size_t numTransitions, Transition const * transitions);
+		CommandState(const char* command, uint8_t numArguments, uint8_t numTransitions, Transition const * transitions);
 		virtual void task(MobileStream* const outer, ParseState& parseState) const;
 	protected:
 		const char* _command;
@@ -176,7 +175,7 @@ public:
 
 	class DataTransmissionState: public CommandState {
 	public:
-		DataTransmissionState(size_t numTransitions, Transition const * transitions);
+		DataTransmissionState(uint8_t numTransitions, Transition const * transitions);
 		virtual void task(MobileStream* const outer, ParseState& parseState) const;
 	};
 
