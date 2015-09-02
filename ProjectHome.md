@@ -1,0 +1,5 @@
+This extension allows MAVLink over UDP over a cellular data network, using a GSM module like DroneCell.
+It uses the AT command mode of the module for sending and receiving data, while monitoring messages from the module about link state and reconnecting when necessary. This is better than just using transparent mode, which has no way to recover from conditions like leaving and re-entering cell coverage, or a module restart.
+The implementation is based on a state machine that sends commands to the module and reacts to responses.
+Currently, only DroneCell (and others with the SIM900(D)) module is supported. Configuration needs to be made into the source code, until a deeper integration into Ardupilot is made.
+The implementation introduces a common abstract supertype of FastSerial and the GSM modem, making integration into Ardupilot a matter of changing a few lines in a few files.
